@@ -1,5 +1,11 @@
 {
   "reservations": [
-    
+    {
+      "id": "9a34a598-452b-47b0-83c4-cd60f3b5ee2f",
+      "name": "samssson",
+      "date": "2024-04-10",
+      "time": "Fm",
+      "packages": "Kall"
+    }
   ]
 }

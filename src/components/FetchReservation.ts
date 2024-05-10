@@ -5,7 +5,7 @@ export interface Reservation{
     name: string
     date: string
     time: string
-    package: string
+    packages: string
 }
 
 export const useFetchReservation  = () => {
@@ -15,7 +15,7 @@ export const useFetchReservation  = () => {
     // Funktion för att hämta reservationer
     useEffect(() => {
         const fetchReservations = async () => {
-          const response = await fetch("http://localhost:3000/reservations");
+          const response = await fetch("http://localhost:8080/reservations");
           const data = await response.json();
           setReservations(data);
         };

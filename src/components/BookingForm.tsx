@@ -11,7 +11,7 @@ type BookingFormProps = {
 };
 
 const useAvailableTimes = (reservations: Reservation[], selectedDay: Date | null) => {
-    const [availableTimes, setAvailableTimes] = useState<Array<{time: string, package: string}>>([]);
+    const [availableTimes, setAvailableTimes] = useState<Array<{time: string, packages: string}>>([]);
     const times = useMemo(() => ['Fm', 'Em', 'Kväll'], []);
     const packages = useMemo(() => ['Kall', 'Varm'], []);
 
@@ -22,8 +22,8 @@ const useAvailableTimes = (reservations: Reservation[], selectedDay: Date | null
 
         for (const time of times) {
           for (const pkg of packages) {
-            if (!bookingsForDate.some(b => b.time === time && b.package === pkg)) {
-              newAvailableTimes.push({ time, package: pkg });
+            if (!bookingsForDate.some(b => b.time === time && b.packages === pkg)) {
+              newAvailableTimes.push({ time, packages: pkg });
             }
           }
         }
@@ -63,7 +63,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ reservations, reload, setPage
 
     const saveReservation = async (newBooking: Reservation) => {
         try {
-            await fetch ("http://localhost:3000/reservations", {
+            await fetch ("http://localhost:8080/reservation", {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json"
@@ -72,7 +72,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ reservations, reload, setPage
             });
 
             // Hämta den uppdaterade listan av bokningar
-            const response = await fetch("http://localhost:3000/reservations");
+            const response = await fetch("http://localhost:8080/reservations");
             const updatedReservations = await response.json();
 
             return updatedReservations;
@@ -92,7 +92,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ reservations, reload, setPage
             return;
         }
 
-        if (reservations.some(b => new Date(b.date).toDateString() === selectedDay.toDateString() && b.time === selectedTime && b.package === selectedPackage)) {
+        if (reservations.some(b => new Date(b.date).toDateString() === selectedDay.toDateString() && b.time === selectedTime && b.packages === selectedPackage)) {
             alert('Fel: Den valda tiden och paketet har redan bokats för detta datum.');
             return;
         }
@@ -100,7 +100,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ reservations, reload, setPage
 
         const id = uuidv4(); // Generera ett unikt ID
 
-        const newBooking: Reservation = { id, name, date, time: selectedTime, package: selectedPackage };
+        const newBooking: Reservation = { id, name, date, time: selectedTime, packages: selectedPackage };
         await saveReservation(newBooking);
 
         // Rensa alla inputfält och gjorda klick
@@ -131,8 +131,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ reservations, reload, setPage
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="package">Välj vilket paket: </label><br />
-                    <select id="package" onChange={e => setSelectedPackage(e.target.value as 'Kall' | 'Varm')}>
+                    <label htmlFor="packages">Välj vilket paket: </label><br />
+                    <select id="packages" onChange={e => setSelectedPackage(e.target.value as 'Kall' | 'Varm')}>
                     <option value="">Välj paket</option>
                     {packages.map(pkg => (
                     <option key={pkg} value={pkg}>{pkg}</option>
@@ -144,7 +144,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ reservations, reload, setPage
             <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Namn på bokningen" />
             <br /><button onClick={handleBooking}>Boka</button>
             <h3>Lediga tider:</h3>
-            {availableTimes.map(({ time, package: pkg }, index) => (
+            {availableTimes.map(({ time, packages: pkg }, index) => (
             <div key={index}>
                 <p>Tid: {time}</p>
                 <p>Paket: {pkg}</p>

@@ -18,7 +18,7 @@ const AllReservationsPage: React.FC<AllReservationsPageProps> = ({ reservations,
           <p>Namn: {reservation.name}</p>
           <p>Datum: {reservation.date}</p>
           <p>Tid: {reservation.time}</p>
-          <p>Paket: {reservation.package}</p>
+          <p>Paket: {reservation.packages}</p>
           <hr />
         </div>
       ))}
