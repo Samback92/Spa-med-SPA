@@ -63,7 +63,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ reservations, reload, setPage
 
     const saveReservation = async (newBooking: Reservation) => {
         try {
-            await fetch ("http://localhost:8080/reservation", {
+            await fetch ("https://coral-app-w45yr.ondigitalocean.app//reservation", {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json"
@@ -72,7 +72,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ reservations, reload, setPage
             });
 
             // Hämta den uppdaterade listan av bokningar
-            const response = await fetch("http://localhost:8080/reservations");
+            const response = await fetch("https://coral-app-w45yr.ondigitalocean.app//reservations");
             const updatedReservations = await response.json();
 
             return updatedReservations;
