@@ -15,7 +15,7 @@ export const useFetchReservation  = () => {
     // Funktion för att hämta reservationer
     useEffect(() => {
         const fetchReservations = async () => {
-          const response = await fetch("https://coral-app-w45yr.ondigitalocean.app//reservations");
+          const response = await fetch("https://coral-app-w45yr.ondigitalocean.app/reservations");
           const data = await response.json();
           setReservations(data);
         };
